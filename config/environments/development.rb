@@ -76,4 +76,5 @@ Rails.application.configure do
 
   # カリキュラム追加
   config.hosts.clear
+  config.active_job.queue_adapter = :inline
 end
