@@ -1,6 +1,7 @@
 class UsersController < ApplicationController
   def show
     @user = User.find(params[:id])
+    byebug
     @post_images = @user.post_images
   end
 
