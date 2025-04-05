@@ -4,7 +4,7 @@ class PostCommentsController < ApplicationController
     comment = current_user.post_comments.new(post_comment_params) # 省略した書き方(詳細は18章)
     comment.post_image_id = post_image.id
     comment.save
-    redirect_to post_image_path(post_image) # ?
+    redirect_to post_image_path(post_image) # parenthesesの中身はpost_image.idのほうが正しい
   end
 
   def destroy
