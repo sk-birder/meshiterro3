@@ -10,7 +10,7 @@ import "channels"
 
 // 以下4行はカリキュラム追加
 import "jquery";
-import 'popper.js';
+import "popper.js";
 import "bootstrap";
 import "../stylesheets/application";
 
