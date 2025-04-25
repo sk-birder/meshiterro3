@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  # devise_for :admins
+  # admin/sign_in用の設定
+  devise_for :admin, skip: [:registrations, :password], controllers: {
+    sessions: 'admin/sessions'
+  }
+
   devise_for :users
   root to: "homes#top"
 
