@@ -1,24 +1,26 @@
 class ApplicationController < ActionController::Base
-  before_action :authenticate_user!, except: [:top], unless: :admin_controller?
-  before_action :configure_permitted_parameters, if: :devise_controller?
+  # before_action :authenticate_user!, except: [:top], unless: :admin_controller?
+  before_action :configure_authentication
 
-  # サインアップ・サインイン後の遷移先を投稿一覧ページに変更
-  def after_sign_in_path_for(resource)
-    post_images_path
-  end
-
-  # サインアウト後の遷移先をAboutページに変更
-  def after_sign_out_path_for(resource)
-    about_path
-  end
-  
   private
-  def admin_controller?
-    self.class.module_parent_name == 'Admin'
+  # 現在のコントローラーが管理者用かどうかに基づいて適切な認証メソッド
+  # （authenticate_user! または authenticate_admin!）を呼び出します。
+  # このメソッドはbefore_actionで実行されます。
+  def configure_authentication
+    if admin_controller?
+      authenticate_admin!
+    else
+      authenticate_user! unless action_is_public?
+    end
   end
-  protected
 
-  def configure_permitted_parameters
-    devise_parameter_sanitizer.permit(:sign_up, keys: [:name])
+  # 現在のコントローラがAdmin名前空間の下にあるかどうかを判定
+  def admin_controller?
+    self.class.module_parent_name == 'Admin' # 動いているコントローラがAdminモジュール下ならTrueを返す
+  end
+
+  # 特定のアクションで認証が不要かどうかを判定(ここではhomes#top)
+  def action_is_public?
+    controller_name == 'home' && action_name == 'top'
   end
 end
